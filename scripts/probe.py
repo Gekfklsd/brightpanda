@@ -43,7 +43,20 @@ async def one():
 
 
 async def main():
-    await one()
+    c = MetaculusClient()
+    for label, kw in [
+        ("any resolved binary opened after cut", dict(allowed_statuses=["resolved"], allowed_types=["binary"], open_time_gt=CUT)),
+        ("cup fall 2026", dict(allowed_tournaments=["metaculus-cup-fall-2026"], allowed_statuses=["resolved"], allowed_types=["binary"])),
+        ("resolved binary closing after cut", dict(allowed_statuses=["resolved"], allowed_types=["binary"], close_time_gt=CUT)),
+    ]:
+        try:
+            qs = await c.get_questions_matching_filter(ApiFilter(**kw), num_questions=None, error_if_question_target_missed=False)
+        except Exception as e:
+            print(f"{label}: error {type(e).__name__} {str(e)[:150]}"); continue
+        res = {}
+        for q in qs:
+            res[str(q.resolution_string)] = res.get(str(q.resolution_string), 0) + 1
+        print(f"{label}: {len(qs)} questions, resolutions {res}")
     return
     for t in (33121,):
         await count(f"{t} resolved", allowed_tournaments=[t], allowed_statuses=["resolved"])
