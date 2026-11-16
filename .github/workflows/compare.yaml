@@ -22,6 +22,10 @@ on:
         description: "Ours against the template's prompt, on the first model"
         type: boolean
         default: false
+      probe:
+        description: "Only count resolved questions (no model calls)"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -49,11 +53,14 @@ jobs:
           RUNS: ${{ inputs.runs }}
           MAX_USD: ${{ inputs.max_usd }}
           PROMPT_TEST: ${{ inputs.prompt_test }}
+          PROBE: ${{ inputs.probe }}
         run: |
+          if [ "$PROBE" = "true" ]; then uv run python scripts/probe.py; exit 0; fi
           extra=""
           [ "$PROMPT_TEST" = "true" ] && extra="--prompt-test"
           uv run python compare.py --models $MODELS --n "$N" --runs "$RUNS" --max-usd "$MAX_USD" $extra
       - name: Keep the result
+        if: ${{ !inputs.probe }}
         run: |
           git config user.name "brightpanda-bot"
           git config user.email "brightpanda-bot@users.noreply.github.com"
