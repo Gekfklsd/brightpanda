@@ -8,7 +8,7 @@ on:
     inputs:
       models:
         description: "OpenRouter models, space separated, first is the reference"
-        default: "openrouter/openai/gpt-5.4 openrouter/anthropic/claude-fable-5.2 openrouter/openai/gpt-5.6-terra openrouter/anthropic/claude-sonnet-5.5 openrouter/google/gemini-3.8-flash openrouter/deepseek/deepseek-v4.1-flash"
+        default: "openrouter/openai/gpt-5.4 openrouter/anthropic/claude-fable-5.2 openrouter/deepseek/deepseek-v4.1-flash"
       n:
         description: "Resolved questions to use"
         default: "60"
@@ -17,7 +17,7 @@ on:
         default: "1"
       max_usd:
         description: "Stop when this much has been spent"
-        default: "12"
+        default: "4"
       prompt_test:
         description: "Ours against the template's prompt, on the first model"
         type: boolean
