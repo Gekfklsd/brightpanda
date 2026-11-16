@@ -1,5 +1,554 @@
 {
- "openrouter/openai/gpt-5.4|ours": [],
- "openrouter/openai/gpt-5.4-mini|ours": [],
- "openrouter/deepseek/deepseek-v4.1-flash|ours": []
+ "openrouter/openai/gpt-5.4|ours": [
+  {
+   "q": 266905772,
+   "title": "DEMS/IND win ANY of Florida, Mississippi, Montana or Louisiana?",
+   "yes": true,
+   "p": 0.24
+  },
+  {
+   "q": 772125305,
+   "title": "Will Susan Collins be seen with Donald Trump before election day?",
+   "yes": false,
+   "p": 0.09
+  },
+  {
+   "q": 978110958,
+   "title": "Democrats win Texas and Michigan Senate election?",
+   "yes": true,
+   "p": 0.1
+  },
+  {
+   "q": 289871729,
+   "title": "CI2026: Will the next ECOFIN decide to include novel tobacco products in the revised Tobacco Taxation Directive?",
+   "yes": false,
+   "p": 0.27
+  },
+  {
+   "q": 719057640,
+   "title": "Will the Democrats hold 53 or more Senate seats in the next Congress?",
+   "yes": true,
+   "p": 0.15
+  },
+  {
+   "q": 294596314,
+   "title": "Will Abdul El-Sayed win by a larger margin than James Talarico does?",
+   "yes": false,
+   "p": 0.82
+  },
+  {
+   "q": 846326110,
+   "title": "Will any of OpenAI\u2019s massive release of mathematical results be shown to be flawed by the end of November?",
+   "yes": true,
+   "p": 0.14
+  },
+  {
+   "q": 987288906,
+   "title": "Will Zvi write a full capabilities report on Gemini 4 Argon?",
+   "yes": false,
+   "p": 0.55
+  },
+  {
+   "q": 273085385,
+   "title": "Will Republicans chances to win the senate go above 50% again?",
+   "yes": false,
+   "p": 0.54
+  },
+  {
+   "q": 990889006,
+   "title": "Will Trump claim the Brazilian election was rigged?",
+   "yes": true,
+   "p": 0.15
+  },
+  {
+   "q": 201479700,
+   "title": "Will Abdul El Sayed win by 100,000 votes or more?",
+   "yes": true,
+   "p": 0.2
+  },
+  {
+   "q": 549169997,
+   "title": "Jensen Huang announces leaving as Nvidia CEO by the end of November",
+   "yes": true,
+   "p": 0.97
+  },
+  {
+   "q": 842805105,
+   "title": "Will Roofcast's pilot for their property prediction platform get 50 sign ups before October 12?",
+   "yes": false,
+   "p": 0.24
+  },
+  {
+   "q": 828962520,
+   "title": "Next Claude Fable released before Anthropic IPO?",
+   "yes": true,
+   "p": 0.84
+  },
+  {
+   "q": 982058814,
+   "title": "By Oct 31, 2026, will openai.com say its agents accessed a U.S. federal government system without authorization?",
+   "yes": false,
+   "p": 0.08
+  },
+  {
+   "q": 104258001,
+   "title": "\ud83c\uddeb\ud83c\uddf7\ud83e\udea7 Will France report 500,000+ protesters on at least 1 of the next 2 Saturdays (Oct 24 or Oct 31, 2026)?",
+   "yes": false,
+   "p": 0.45
+  },
+  {
+   "q": 174990373,
+   "title": "Fable 5.5 is released by the end of October 16th?",
+   "yes": false,
+   "p": 0.07
+  },
+  {
+   "q": 469802909,
+   "title": "Will Anthropic release a new Claude Fable model before October 12, 2026?",
+   "yes": false,
+   "p": 0.07
+  },
+  {
+   "q": 741132208,
+   "title": "Has OpenAI made a cryptanalytic breakthrough?",
+   "yes": false,
+   "p": 0.03
+  },
+  {
+   "q": 828397602,
+   "title": "Will Anthropic\u2019s IPO Form S-1 be public by 31 October 2026?",
+   "yes": true,
+   "p": 0.06
+  },
+  {
+   "q": 286802338,
+   "title": "Will Anthropic release a new Claude Fable model before October 26, 2026?",
+   "yes": false,
+   "p": 0.06
+  },
+  {
+   "q": 73973768,
+   "title": "Will Washington Initiative IL26-638 (girls' sports eligibility by sex) be approved in the November 3, 2026 election?",
+   "yes": true,
+   "p": 0.36
+  },
+  {
+   "q": 272124344,
+   "title": "Will Republican chances to win the house go above 10% again?",
+   "yes": true,
+   "p": 0.36
+  },
+  {
+   "q": 184389471,
+   "title": "Republicans win Texas governor by 6+ points?",
+   "yes": false,
+   "p": 0.74
+  },
+  {
+   "q": 507440560,
+   "title": "Will the WTI Crude Oil Spot Price be above $99.50 on October 8, 2026?",
+   "yes": false,
+   "p": 0.17
+  },
+  {
+   "q": 439046259,
+   "title": "Jon Ossoff and Roy Cooper combined margin of victory of 25% or more?",
+   "yes": true,
+   "p": 0.06
+  },
+  {
+   "q": 868787668,
+   "title": "100,000 Mana Boss Battle",
+   "yes": false,
+   "p": 0.35
+  },
+  {
+   "q": 17076852,
+   "title": "Jensen Huang leave or announce leaving as Nvidia CEO in 2026?",
+   "yes": true,
+   "p": 0.08
+  },
+  {
+   "q": 120678933,
+   "title": "Will Donald Trump go to Maine before election day?",
+   "yes": false,
+   "p": 0.18
+  },
+  {
+   "q": 166676460,
+   "title": "Fable 5.5 is released by the end of october?",
+   "yes": false,
+   "p": 0.14
+  },
+  {
+   "q": 685963461,
+   "title": "Will John Fetterman endorse a Republican before election day?",
+   "yes": false,
+   "p": 0.06
+  },
+  {
+   "q": 301051747,
+   "title": "Will a case linked to the Irkutsk plague be reported outside Irkutsk Oblast by November 1?",
+   "yes": false,
+   "p": 0.09
+  }
+ ],
+ "openrouter/openai/gpt-5.4-mini|ours": [
+  {
+   "q": 266905772,
+   "title": "DEMS/IND win ANY of Florida, Mississippi, Montana or Louisiana?",
+   "yes": true,
+   "p": 0.14
+  },
+  {
+   "q": 772125305,
+   "title": "Will Susan Collins be seen with Donald Trump before election day?",
+   "yes": false,
+   "p": 0.18
+  },
+  {
+   "q": 978110958,
+   "title": "Democrats win Texas and Michigan Senate election?",
+   "yes": true,
+   "p": 0.07
+  },
+  {
+   "q": 289871729,
+   "title": "CI2026: Will the next ECOFIN decide to include novel tobacco products in the revised Tobacco Taxation Directive?",
+   "yes": false,
+   "p": 0.15
+  },
+  {
+   "q": 719057640,
+   "title": "Will the Democrats hold 53 or more Senate seats in the next Congress?",
+   "yes": true,
+   "p": 0.18
+  },
+  {
+   "q": 294596314,
+   "title": "Will Abdul El-Sayed win by a larger margin than James Talarico does?",
+   "yes": false,
+   "p": 0.82
+  },
+  {
+   "q": 846326110,
+   "title": "Will any of OpenAI\u2019s massive release of mathematical results be shown to be flawed by the end of November?",
+   "yes": true,
+   "p": 0.12
+  },
+  {
+   "q": 987288906,
+   "title": "Will Zvi write a full capabilities report on Gemini 4 Argon?",
+   "yes": false,
+   "p": 0.4
+  },
+  {
+   "q": 273085385,
+   "title": "Will Republicans chances to win the senate go above 50% again?",
+   "yes": false,
+   "p": 0.55
+  },
+  {
+   "q": 990889006,
+   "title": "Will Trump claim the Brazilian election was rigged?",
+   "yes": true,
+   "p": 0.15
+  },
+  {
+   "q": 201479700,
+   "title": "Will Abdul El Sayed win by 100,000 votes or more?",
+   "yes": true,
+   "p": 0.27
+  },
+  {
+   "q": 549169997,
+   "title": "Jensen Huang announces leaving as Nvidia CEO by the end of November",
+   "yes": true,
+   "p": 0.03
+  },
+  {
+   "q": 842805105,
+   "title": "Will Roofcast's pilot for their property prediction platform get 50 sign ups before October 12?",
+   "yes": false,
+   "p": 0.2
+  },
+  {
+   "q": 828962520,
+   "title": "Next Claude Fable released before Anthropic IPO?",
+   "yes": true,
+   "p": 0.85
+  },
+  {
+   "q": 982058814,
+   "title": "By Oct 31, 2026, will openai.com say its agents accessed a U.S. federal government system without authorization?",
+   "yes": false,
+   "p": 0.03
+  },
+  {
+   "q": 104258001,
+   "title": "\ud83c\uddeb\ud83c\uddf7\ud83e\udea7 Will France report 500,000+ protesters on at least 1 of the next 2 Saturdays (Oct 24 or Oct 31, 2026)?",
+   "yes": false,
+   "p": 0.37
+  },
+  {
+   "q": 174990373,
+   "title": "Fable 5.5 is released by the end of October 16th?",
+   "yes": false,
+   "p": 0.04
+  },
+  {
+   "q": 469802909,
+   "title": "Will Anthropic release a new Claude Fable model before October 12, 2026?",
+   "yes": false,
+   "p": 0.08
+  },
+  {
+   "q": 741132208,
+   "title": "Has OpenAI made a cryptanalytic breakthrough?",
+   "yes": false,
+   "p": 0.03
+  },
+  {
+   "q": 828397602,
+   "title": "Will Anthropic\u2019s IPO Form S-1 be public by 31 October 2026?",
+   "yes": true,
+   "p": 0.03
+  },
+  {
+   "q": 286802338,
+   "title": "Will Anthropic release a new Claude Fable model before October 26, 2026?",
+   "yes": false,
+   "p": 0.06
+  },
+  {
+   "q": 73973768,
+   "title": "Will Washington Initiative IL26-638 (girls' sports eligibility by sex) be approved in the November 3, 2026 election?",
+   "yes": true,
+   "p": 0.52
+  },
+  {
+   "q": 272124344,
+   "title": "Will Republican chances to win the house go above 10% again?",
+   "yes": true,
+   "p": 0.58
+  },
+  {
+   "q": 184389471,
+   "title": "Republicans win Texas governor by 6+ points?",
+   "yes": false,
+   "p": 0.77
+  },
+  {
+   "q": 507440560,
+   "title": "Will the WTI Crude Oil Spot Price be above $99.50 on October 8, 2026?",
+   "yes": false,
+   "p": 0.1
+  },
+  {
+   "q": 439046259,
+   "title": "Jon Ossoff and Roy Cooper combined margin of victory of 25% or more?",
+   "yes": true,
+   "p": 0.04
+  },
+  {
+   "q": 868787668,
+   "title": "100,000 Mana Boss Battle",
+   "yes": false,
+   "p": 0.1
+  },
+  {
+   "q": 17076852,
+   "title": "Jensen Huang leave or announce leaving as Nvidia CEO in 2026?",
+   "yes": true,
+   "p": 0.03
+  },
+  {
+   "q": 120678933,
+   "title": "Will Donald Trump go to Maine before election day?",
+   "yes": false,
+   "p": 0.2
+  },
+  {
+   "q": 166676460,
+   "title": "Fable 5.5 is released by the end of october?",
+   "yes": false,
+   "p": 0.08
+  },
+  {
+   "q": 685963461,
+   "title": "Will John Fetterman endorse a Republican before election day?",
+   "yes": false,
+   "p": 0.05
+  },
+  {
+   "q": 301051747,
+   "title": "Will a case linked to the Irkutsk plague be reported outside Irkutsk Oblast by November 1?",
+   "yes": false,
+   "p": 0.03
+  }
+ ],
+ "openrouter/deepseek/deepseek-v4.1-flash|ours": [
+  {
+   "q": 266905772,
+   "title": "DEMS/IND win ANY of Florida, Mississippi, Montana or Louisiana?",
+   "yes": true,
+   "p": 0.35
+  },
+  {
+   "q": 772125305,
+   "title": "Will Susan Collins be seen with Donald Trump before election day?",
+   "yes": false,
+   "p": 0.07
+  },
+  {
+   "q": 978110958,
+   "title": "Democrats win Texas and Michigan Senate election?",
+   "yes": true,
+   "p": 0.06
+  },
+  {
+   "q": 289871729,
+   "title": "CI2026: Will the next ECOFIN decide to include novel tobacco products in the revised Tobacco Taxation Directive?",
+   "yes": false,
+   "p": 0.05
+  },
+  {
+   "q": 294596314,
+   "title": "Will Abdul El-Sayed win by a larger margin than James Talarico does?",
+   "yes": false,
+   "p": 0.9
+  },
+  {
+   "q": 846326110,
+   "title": "Will any of OpenAI\u2019s massive release of mathematical results be shown to be flawed by the end of November?",
+   "yes": true,
+   "p": 0.12
+  },
+  {
+   "q": 987288906,
+   "title": "Will Zvi write a full capabilities report on Gemini 4 Argon?",
+   "yes": false,
+   "p": 0.6
+  },
+  {
+   "q": 273085385,
+   "title": "Will Republicans chances to win the senate go above 50% again?",
+   "yes": false,
+   "p": 0.4
+  },
+  {
+   "q": 990889006,
+   "title": "Will Trump claim the Brazilian election was rigged?",
+   "yes": true,
+   "p": 0.65
+  },
+  {
+   "q": 201479700,
+   "title": "Will Abdul El Sayed win by 100,000 votes or more?",
+   "yes": true,
+   "p": 0.4
+  },
+  {
+   "q": 842805105,
+   "title": "Will Roofcast's pilot for their property prediction platform get 50 sign ups before October 12?",
+   "yes": false,
+   "p": 0.2
+  },
+  {
+   "q": 828962520,
+   "title": "Next Claude Fable released before Anthropic IPO?",
+   "yes": true,
+   "p": 0.78
+  },
+  {
+   "q": 982058814,
+   "title": "By Oct 31, 2026, will openai.com say its agents accessed a U.S. federal government system without authorization?",
+   "yes": false,
+   "p": 0.03
+  },
+  {
+   "q": 104258001,
+   "title": "\ud83c\uddeb\ud83c\uddf7\ud83e\udea7 Will France report 500,000+ protesters on at least 1 of the next 2 Saturdays (Oct 24 or Oct 31, 2026)?",
+   "yes": false,
+   "p": 0.3
+  },
+  {
+   "q": 174990373,
+   "title": "Fable 5.5 is released by the end of October 16th?",
+   "yes": false,
+   "p": 0.05
+  },
+  {
+   "q": 469802909,
+   "title": "Will Anthropic release a new Claude Fable model before October 12, 2026?",
+   "yes": false,
+   "p": 0.04
+  },
+  {
+   "q": 741132208,
+   "title": "Has OpenAI made a cryptanalytic breakthrough?",
+   "yes": false,
+   "p": 0.03
+  },
+  {
+   "q": 828397602,
+   "title": "Will Anthropic\u2019s IPO Form S-1 be public by 31 October 2026?",
+   "yes": true,
+   "p": 0.03
+  },
+  {
+   "q": 286802338,
+   "title": "Will Anthropic release a new Claude Fable model before October 26, 2026?",
+   "yes": false,
+   "p": 0.1
+  },
+  {
+   "q": 73973768,
+   "title": "Will Washington Initiative IL26-638 (girls' sports eligibility by sex) be approved in the November 3, 2026 election?",
+   "yes": true,
+   "p": 0.35
+  },
+  {
+   "q": 272124344,
+   "title": "Will Republican chances to win the house go above 10% again?",
+   "yes": true,
+   "p": 0.25
+  },
+  {
+   "q": 184389471,
+   "title": "Republicans win Texas governor by 6+ points?",
+   "yes": false,
+   "p": 0.88
+  },
+  {
+   "q": 507440560,
+   "title": "Will the WTI Crude Oil Spot Price be above $99.50 on October 8, 2026?",
+   "yes": false,
+   "p": 0.55
+  },
+  {
+   "q": 439046259,
+   "title": "Jon Ossoff and Roy Cooper combined margin of victory of 25% or more?",
+   "yes": true,
+   "p": 0.08
+  },
+  {
+   "q": 17076852,
+   "title": "Jensen Huang leave or announce leaving as Nvidia CEO in 2026?",
+   "yes": true,
+   "p": 0.03
+  },
+  {
+   "q": 166676460,
+   "title": "Fable 5.5 is released by the end of october?",
+   "yes": false,
+   "p": 0.07
+  },
+  {
+   "q": 685963461,
+   "title": "Will John Fetterman endorse a Republican before election day?",
+   "yes": false,
+   "p": 0.03
+  }
+ ]
 }
