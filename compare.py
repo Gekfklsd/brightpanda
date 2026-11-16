@@ -84,7 +84,7 @@ class FixedDay:
 def make_bot(model: str) -> B.BrightPandaBot:
     llms = B.BrightPandaBot.panda_llms()
     effort = config.FORECASTER_EFFORT if "perplexity" not in model else None
-    llms["default"] = GeneralLlm(model=model, temperature=None if effort else 0.3, reasoning_effort=effort, timeout=600, allowed_tries=2)
+    llms["default"] = GeneralLlm(model=model, temperature=None if effort else 0.3, reasoning_effort=effort, timeout=600, allowed_tries=2, max_tokens=config.MAX_TOKENS_FORECASTER)
     return B.BrightPandaBot(
         research_reports_per_question=1, predictions_per_research_report=1, use_research_summary_to_forecast=False,
         publish_reports_to_metaculus=False, folder_to_save_reports_to=None, skip_previously_forecasted_questions=False,

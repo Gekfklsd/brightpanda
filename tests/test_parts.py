@@ -146,3 +146,24 @@ def test_compact_every_type_fits_one_short_line():
     assert C.compact(d, is_date=True).startswith("median 01 Jan 1970")
     for f in (mc, C.compact(d)):
         assert C.problems(C.build(f, GOOD)) == []
+
+
+def test_blank_settings_fall_back_to_defaults(monkeypatch):
+    # GitHub passes an unset repository variable as an empty string
+    import importlib
+    for k in ("PANDA_FORECASTER", "PANDA_PARSER", "PANDA_WEB_RESEARCHER", "PANDA_COMMENTER", "PANDA_FORECASTER_EFFORT", "PANDA_RUNS"):
+        monkeypatch.setenv(k, "")
+    c = importlib.reload(config)
+    try:
+        assert c.FORECASTER.startswith("openrouter/") and c.PARSER and c.WEB_RESEARCHER and c.COMMENTER
+        assert c.RUNS_PER_QUESTION == 5 and c.FORECASTER_EFFORT == "high"
+    finally:
+        monkeypatch.undo()
+        importlib.reload(config)
+
+
+def test_every_model_call_has_a_word_cap():
+    from panda.bot import BrightPandaBot
+    for purpose, llm in BrightPandaBot.panda_llms().items():
+        if purpose != "researcher":
+            assert llm.litellm_kwargs.get("max_tokens"), purpose

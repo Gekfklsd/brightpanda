@@ -110,7 +110,7 @@ Name the outlet for each fact. Do not forecast. Under 400 words."""
 async def web(question, model: str = config.WEB_RESEARCHER) -> tuple[str, list[str]]:
     from forecasting_tools import GeneralLlm
 
-    llm = GeneralLlm(model=model, temperature=0, timeout=120, allowed_tries=2)
+    llm = GeneralLlm(model=model, temperature=0, timeout=120, allowed_tries=2, max_tokens=config.MAX_TOKENS_WEB)
     text = await llm.invoke(
         WEB_PROMPT.format(
             question=question.question_text,

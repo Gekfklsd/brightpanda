@@ -89,10 +89,11 @@ class BrightPandaBot(FallTemplateBot2026):
                 reasoning_effort=config.FORECASTER_EFFORT or None,
                 timeout=600,
                 allowed_tries=2,
+                max_tokens=config.MAX_TOKENS_FORECASTER,
             ),
-            "summarizer": GeneralLlm(model=config.PARSER, temperature=0.2),
+            "summarizer": GeneralLlm(model=config.PARSER, temperature=0.2, max_tokens=config.MAX_TOKENS_SMALL),
             "researcher": "panda",
-            "parser": GeneralLlm(model=config.PARSER, temperature=0),
+            "parser": GeneralLlm(model=config.PARSER, temperature=0, max_tokens=config.MAX_TOKENS_SMALL),
         }
 
     # -------------------------------------------------------------- research
@@ -179,7 +180,7 @@ class BrightPandaBot(FallTemplateBot2026):
         reasoning = self._middle_reasoning(result.predictions)
         m["fallback_body"] = C.fallback_body(reasoning)
         try:
-            llm = self._comment_llm or GeneralLlm(model=config.COMMENTER, temperature=0.2, timeout=90, allowed_tries=2)
+            llm = self._comment_llm or GeneralLlm(model=config.COMMENTER, temperature=0.2, timeout=90, allowed_tries=2, max_tokens=config.MAX_TOKENS_COMMENT)
             m["comment_body"] = await llm.invoke(
                 C.COMMENT_PROMPT.format(
                     question=question.question_text,

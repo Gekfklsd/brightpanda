@@ -42,6 +42,7 @@ def make_bot(publish: bool, skip_done: bool) -> BrightPandaBot:
         folder_to_save_reports_to=None,
         skip_previously_forecasted_questions=skip_done,
         extra_metadata_in_explanation=False,
+        enable_summarize_research=False,  # the summary is never used to forecast; it only cost money
         llms=BrightPandaBot.panda_llms(),
     )
 
