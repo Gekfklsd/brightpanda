@@ -33,7 +33,18 @@ async def count(label, **kw):
         print(f"{label}: error {type(e).__name__}: {str(e)[:200]}")
 
 
+async def one():
+    c = MetaculusClient()
+    qs = await c.get_questions_matching_filter(ApiFilter(allowed_tournaments=[33121], allowed_statuses=["resolved"], allowed_types=["binary"]), num_questions=None, error_if_question_target_missed=False)
+    for q in qs[:5]:
+        full = c.get_question_by_post_id(q.id_of_post)
+        full = await full if asyncio.iscoroutine(full) else full
+        print(f"single fetch post {q.id_of_post}: resolution {full.resolution_string!r} criteria {'yes' if full.resolution_criteria else 'blank'}")
+
+
 async def main():
+    await one()
+    return
     for t in (33121,):
         await count(f"{t} resolved", allowed_tournaments=[t], allowed_statuses=["resolved"])
         await count(f"{t} closed", allowed_tournaments=[t], allowed_statuses=["closed"])
