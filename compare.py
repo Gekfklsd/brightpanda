@@ -42,9 +42,59 @@ from panda import config, guards  # noqa: E402
 ROOT = Path(__file__).resolve().parent
 CUTOFF = datetime(2026, 9, 28, tzinfo=timezone.utc)  # Fall 2026 season start, after every candidate's training data
 PROJECTS = [config.FALL_2026, "minibench"]
+SOURCE = "manifold"
+
+
+NOISE = ("coinflip", "coin flip", "daily ", "will i ", " my ", "i will", "this market", "pangram", "mistress")
+
+
+def manifold_questions(n: int | None) -> list[BinaryQuestion]:
+    """Resolved yes/no questions from Manifold's public API, created after CUTOFF.
+
+    Metaculus hides question resolutions from bot accounts (checked 16 Nov 2026 with scripts/probe.py:
+    the resolution field is withheld on every resolved question, tournament or not), so the
+    comparison uses Manifold, a public forecasting site with an open API."""
+    import urllib.request
+
+    def get(url):
+        req = urllib.request.Request(url, headers={"User-Agent": "brightpanda-bench"})
+        return json.load(urllib.request.urlopen(req, timeout=30))
+
+    cut_ms = CUTOFF.timestamp() * 1000
+    picked = []
+    for off in range(0, 3000, 100):
+        try:
+            page = get(f"https://api.manifold.markets/v0/search-markets?term=&filter=resolved&contractType=BINARY&sort=newest&limit=100&offset={off}")
+        except Exception:
+            break  # the search stops paging past a fixed depth
+        if not page:
+            break
+        for m in page:
+            t = m.get("question", "")
+            if (m.get("createdTime", 0) > cut_ms and m.get("resolution") in ("YES", "NO")
+                    and m.get("uniqueBettorCount", 0) >= 25 and not any(w in f" {t.lower()} " for w in NOISE)):
+                picked.append(m)
+        if page[-1].get("createdTime", 0) < cut_ms:
+            break
+    random.Random(7).shuffle(picked)
+    out = []
+    for m in picked[: (n or len(picked))]:
+        try:
+            full = get(f"https://api.manifold.markets/v0/market/{m['id']}")
+        except Exception:
+            full = m
+        out.append(BinaryQuestion(
+            question_text=m["question"], id_of_question=abs(hash(m["id"])) % 10**9, id_of_post=0, page_url=m.get("url", ""),
+            resolution_criteria=(full.get("textDescription") or "Resolves per the question title.")[:3000], fine_print="",
+            background_info="", open_time=datetime.fromtimestamp(m["createdTime"] / 1000, timezone.utc),
+            resolution_string=m["resolution"].lower(),
+        ))
+    return out
 
 
 async def resolved_questions(n: int | None) -> list[BinaryQuestion]:
+    if SOURCE == "manifold":
+        return manifold_questions(n)
     client = MetaculusClient()
     out = []
     for project in PROJECTS:
@@ -156,7 +206,7 @@ def write_report(rows: dict, runs: int, prompt_test: bool, cost: float | None) -
     ids = sorted(common)
     lines = [f"# {'Prompt test' if prompt_test else 'Model choice'}", "",
              f"Run {datetime.now(timezone.utc):%d %b %Y}. {len(ids)} resolved binary questions every arm answered, "
-             f"opened after {CUTOFF:%d %b %Y}, no research, median of {runs} run(s).",
+             f"opened after {CUTOFF:%d %b %Y} (source: {SOURCE}), no research, median of {runs} run(s).",
              f"Cost of this test: {'$%.2f (OpenRouter key usage)' % cost if cost is not None else 'not measured'}.", "",
              "| Arm | Baseline score (higher better) | Brier (lower better) | Difference from first arm, 90% range |",
              "|---|---|---|---|"]
@@ -186,7 +236,10 @@ def main_cli() -> None:
     ap.add_argument("--max-usd", type=float, default=10.0)
     ap.add_argument("--prompt-test", action="store_true")
     ap.add_argument("--list", action="store_true")
+    ap.add_argument("--source", choices=["manifold", "metaculus"], default="manifold")
     a = ap.parse_args()
+    global SOURCE
+    SOURCE = a.source
     if a.list:
         qs = asyncio.run(resolved_questions(None))
         print(f"{len(qs)} resolved binary questions opened after {CUTOFF.date()}; {sum(q.resolution_string.lower() == 'yes' for q in qs)} resolved yes")
