@@ -14,6 +14,7 @@ from __future__ import annotations
 import argparse
 import asyncio
 import logging
+import os
 import sys
 
 import dotenv
@@ -46,6 +47,13 @@ def make_bot(publish: bool, skip_done: bool) -> BrightPandaBot:
 
 
 async def run(mode: str, dry: bool, limit: int | None) -> int:
+    from panda.bot import openrouter_spend
+
+    missing = [k for k in ("METACULUS_TOKEN", "OPENROUTER_API_KEY") if not os.getenv(k)]
+    if missing:
+        print(f"BrightPanda can't run: {', '.join(missing)} not set. Add {'it' if len(missing) == 1 else 'them'} as GitHub secrets.")
+        return 2
+    spend_before = openrouter_spend()
     client = MetaculusClient()
     bot = make_bot(publish=not dry, skip_done=(mode == "tournament"))
     reports = []
@@ -62,7 +70,14 @@ async def run(mode: str, dry: bool, limit: int | None) -> int:
             reports = await bot.forecast_questions(questions, return_exceptions=True)
         else:
             reports = await bot.forecast_on_tournament(config.TEST_AREA, return_exceptions=True)
+    spend_after = openrouter_spend()
+    run_cost = None
+    if spend_before is not None and spend_after is not None:
+        run_cost = round(spend_after - spend_before, 4)
+        bot.budget["cost_usd"] = round(float(bot.budget["cost_usd"]) + run_cost, 4)
     runlog.save_budget(bot.budget)
+    if reports:
+        runlog.write({"run": mode, "dry": dry, "questions": len(reports), "cost_usd": run_cost})
 
     ok = [r for r in reports if not isinstance(r, BaseException)]
     bad = [r for r in reports if isinstance(r, BaseException)]

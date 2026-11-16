@@ -160,3 +160,16 @@ def test_key_never_in_log(env, monkeypatch):
     monkeypatch.setenv("METACULUS_TOKEN", "SECRET-TOKEN-123")
     asyncio.run(make(False, FakeLlm()).forecast_questions([binary_q()], return_exceptions=True))
     assert "SECRET-TOKEN-123" not in (env / "logs" / "local.jsonl").read_text()
+
+
+def test_budget_saved_after_each_question(env):
+    asyncio.run(make(False, FakeLlm()).forecast_questions([binary_q()], return_exceptions=True))
+    assert runlog.load_budget()["asknews_season"] == 6
+
+
+def test_run_refuses_plainly_without_keys(monkeypatch, capsys):
+    import run
+    monkeypatch.delenv("METACULUS_TOKEN", raising=False)
+    monkeypatch.delenv("OPENROUTER_API_KEY", raising=False)
+    assert asyncio.run(run.run("test", True, 1)) == 2
+    assert "not set" in capsys.readouterr().out

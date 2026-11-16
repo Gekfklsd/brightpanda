@@ -51,9 +51,14 @@ def main():
         if a.json:
             print(json.dumps(r, ensure_ascii=False))
             continue
-        cost = f"${r['cost_usd']:.3f}" if r.get("cost_usd") is not None else "cost ?"
+        if "run" in r:
+            c = f"${r['cost_usd']:.3f}" if r.get("cost_usd") is not None else "cost ?"
+            print(f"{r['at'][:16]}  run of {r['questions']} question(s), {c}{' (dry)' if r.get('dry') else ''}")
+            continue
+        cost = f"est ${r['estimate_usd']:.3f}" if r.get("estimate_usd") is not None else ""
+
         state = r.get("forecast") if r.get("ok") else f"FAILED {r.get('error', '')[:80]}"
-        print(f"{r['at'][:16]}  {state:>14}  {cost:>8}  {', '.join(r.get('sources', [])[:3]):30.30}  {r['title'][:70]}")
+        print(f"{r['at'][:16]}  {state:>14}  {cost:>12}  {', '.join(r.get('sources', [])[:3]):30.30}  {r['title'][:70]}")
 
 
 if __name__ == "__main__":

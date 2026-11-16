@@ -220,7 +220,8 @@ class BrightPandaBot(FallTemplateBot2026):
 
     # -------------------------------------------------------- one question
     async def _run_individual_question(self, question: MetaculusQuestion):
-        before = openrouter_spend()
+        # Questions run side by side, so the key's spend can't be split per question.
+        # The exact spend is taken per run in run.py; each row carries the model price estimate.
         row = {
             "question_id": question.id_of_question,
             "post_id": question.id_of_post,
@@ -237,11 +238,7 @@ class BrightPandaBot(FallTemplateBot2026):
             row.update(ok=False, error=f"{type(e).__name__}: {str(e)[:300]}")
             raise
         finally:
-            after = openrouter_spend()
             m = self._meta.pop(_qkey(question), {})
-            if before is not None and after is not None:
-                row["cost_usd"] = round(after - before, 4)
-                self.budget["cost_usd"] = round(float(self.budget["cost_usd"]) + after - before, 4)
             row.update(
                 forecast=m.get("forecast"),
                 comment=m.get("comment"),
@@ -254,3 +251,4 @@ class BrightPandaBot(FallTemplateBot2026):
             if row.get("ok") and self.publish_reports_to_metaculus:
                 self.budget["sent"] = int(self.budget["sent"]) + 1
             runlog.write(row)
+            runlog.save_budget(self.budget)  # after every question, so a cancelled run can't lose the AskNews count
