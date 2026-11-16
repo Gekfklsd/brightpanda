@@ -1,0 +1,62 @@
+name: Compare models on resolved questions
+
+# Manual only. Scores each model on questions that have already resolved, then commits
+# docs/model-choice.md (or docs/prompt-test.md). Capped by max_usd.
+
+on:
+  workflow_dispatch:
+    inputs:
+      models:
+        description: "OpenRouter models, space separated, first is the reference"
+        default: "openrouter/openai/gpt-5.4 openrouter/openai/gpt-5.6-terra openrouter/anthropic/claude-sonnet-5.5 openrouter/google/gemini-3.8-flash openrouter/deepseek/deepseek-v4.1-flash"
+      n:
+        description: "Resolved questions to use"
+        default: "60"
+      runs:
+        description: "Runs per question (median)"
+        default: "1"
+      max_usd:
+        description: "Stop when this much has been spent"
+        default: "12"
+      prompt_test:
+        description: "Ours against the template's prompt, on the first model"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: astral-sh/setup-uv@v10.3.0
+        with:
+          version: "0.13.1"
+          enable-cache: true
+      - run: uv sync --locked
+      - name: Compare
+        env:
+          METACULUS_TOKEN: ${{ secrets.METACULUS_TOKEN }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          MODELS: ${{ inputs.models }}
+          N: ${{ inputs.n }}
+          RUNS: ${{ inputs.runs }}
+          MAX_USD: ${{ inputs.max_usd }}
+          PROMPT_TEST: ${{ inputs.prompt_test }}
+        run: |
+          extra=""
+          [ "$PROMPT_TEST" = "true" ] && extra="--prompt-test"
+          uv run python compare.py --models $MODELS --n "$N" --runs "$RUNS" --max-usd "$MAX_USD" $extra
+      - name: Keep the result
+        run: |
+          git config user.name "brightpanda-bot"
+          git config user.email "brightpanda-bot@users.noreply.github.com"
+          git add docs/*.md state/compare-*.json
+          git diff --cached --quiet || git commit -m "compare: results $(date -u +%Y-%m-%d)"
+          git pull --rebase -q && git push -q

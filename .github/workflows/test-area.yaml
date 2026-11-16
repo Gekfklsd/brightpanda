@@ -1,0 +1,47 @@
+name: Test on the bot testing area
+
+# Manual only. The bot testing area is unscored. Dry run sends nothing and prints each comment
+# with its length, so the comment can be checked. Tuning happens here and on resolved questions only.
+
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: "Most questions to try"
+        default: "4"
+      send:
+        description: "Send to the testing area (unscored) instead of a dry run"
+        type: boolean
+        default: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: astral-sh/setup-uv@v10.3.0
+        with:
+          version: "0.13.1"
+          enable-cache: true
+      - run: uv sync --locked
+      - run: uv run pytest -q
+      - name: Run on the testing area
+        env:
+          METACULUS_TOKEN: ${{ secrets.METACULUS_TOKEN }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          ASKNEWS_CLIENT_ID: ${{ secrets.ASKNEWS_CLIENT_ID }}
+          ASKNEWS_SECRET: ${{ secrets.ASKNEWS_SECRET }}
+          ASKNEWS_API_KEY: ${{ secrets.ASKNEWS_API_KEY }}
+          PANDA_FORECASTER: ${{ vars.PANDA_FORECASTER }}
+          LIMIT: ${{ inputs.limit }}
+          SEND: ${{ inputs.send }}
+        run: |
+          if [ "$SEND" = "true" ]; then
+            uv run python run.py --mode test --limit "$LIMIT"
+          else
+            uv run python run.py --mode test --dry --limit "$LIMIT"
+          fi
