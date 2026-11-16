@@ -38,7 +38,8 @@ How the bot reasoned (one of its runs):
 Write at most {limit} characters, plain text, no heading, no bullet points, no markdown.
 Say only: the base rate or reference class used, the one or two specific facts that moved
 the number most (with a date or figure where there is one), and name the sources those facts
-came from by outlet or site name (no URLs). Do not restate the question. Do not hedge.
+came from by outlet or site name (no URLs). Never name a search tool (Perplexity, AskNews, "web search") as a source.
+Round every figure the way a newspaper would (7.4 trillion, not 7,395,799.98331). Do not restate the question. Do not hedge.
 No words like "As an AI". If the research found nothing useful, say what the forecast rests on instead."""
 
 

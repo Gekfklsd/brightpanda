@@ -83,6 +83,7 @@ async def run(mode: str, dry: bool, limit: int | None) -> int:
     ok = [r for r in reports if not isinstance(r, BaseException)]
     bad = [r for r in reports if isinstance(r, BaseException)]
     print(f"\nBrightPanda: {len(ok)} forecast{'s' if len(ok) != 1 else ''}, {len(bad)} failed, {'DRY RUN, nothing sent' if dry else 'sent'}")
+    print(f"Spent this run: {'$%.3f (OpenRouter key usage)' % run_cost if run_cost is not None else 'not measured'}")
     if dry:
         for r in ok:
             print(f"\n--- {r.question.page_url}\n{r.explanation}\n({len(r.explanation)} characters)")
