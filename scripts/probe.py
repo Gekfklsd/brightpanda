@@ -57,6 +57,11 @@ async def main():
         for q in qs:
             res[str(q.resolution_string)] = res.get(str(q.resolution_string), 0) + 1
         print(f"{label}: {len(qs)} questions, resolutions {res}")
+        if qs:
+            j = qs[0].api_json or {}
+            print("   post keys:", sorted(j.keys()))
+            print("   question keys:", sorted((j.get("question") or {}).keys()))
+        break
     return
     for t in (33121,):
         await count(f"{t} resolved", allowed_tournaments=[t], allowed_statuses=["resolved"])
