@@ -126,3 +126,23 @@ def test_budget_counts_by_month(tmp_path):
     b2 = runlog.load_budget(tmp_path)
     assert b2["asknews_season"] == 6
     assert runlog.asknews_used_this_month(b2) == 6
+
+
+# ------------------------------------------------- one line forecast
+def test_compact_every_type_fits_one_short_line():
+    from forecasting_tools import NumericDistribution, NumericQuestion, Percentile, PredictedOption, PredictedOptionList
+
+    assert C.compact(0.25) == "25%"
+    many = PredictedOptionList(predicted_options=[
+        PredictedOption(option_name=f"A rather long option name number {i}", probability=(i + 1) / 36) for i in range(8)])
+    mc = C.compact(many)
+    assert "\n" not in mc and len(mc) <= 160 and mc.endswith("more")
+    assert mc.startswith("A rather long option name number 7 22%")
+    q = NumericQuestion(question_text="How many?", id_of_question=3, id_of_post=3, page_url="u", upper_bound=100,
+                        lower_bound=0, open_upper_bound=True, open_lower_bound=False, unit_of_measure="deaths")
+    d = NumericDistribution.from_question([Percentile(percentile=p, value=v) for p, v in
+                                           [(0.1, 5), (0.2, 8), (0.4, 12), (0.6, 15), (0.8, 20), (0.9, 30)]], q)
+    assert C.compact(d) == "median 13.5 (80% between 5 and 30)"
+    assert C.compact(d, is_date=True).startswith("median 01 Jan 1970")
+    for f in (mc, C.compact(d)):
+        assert C.problems(C.build(f, GOOD)) == []

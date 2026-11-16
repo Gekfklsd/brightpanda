@@ -205,8 +205,9 @@ class BrightPandaBot(FallTemplateBot2026):
         return predictions[0].reasoning
 
     def _create_comment(self, question, research_prediction_collections, aggregated_prediction, final_cost, time_spent_in_minutes) -> str:
-        report_type = DataOrganizer.get_report_type_for_question_type(type(question))
-        readable = report_type.make_readable_prediction(aggregated_prediction)
+        from forecasting_tools import DateQuestion
+
+        readable = C.compact(aggregated_prediction, is_date=isinstance(question, DateQuestion))
         m = self._meta.setdefault(_qkey(question), {})
         for body in (m.get("comment_body", ""), m.get("fallback_body", "")):
             text = C.build(readable, body)

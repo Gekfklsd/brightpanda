@@ -42,6 +42,50 @@ came from by outlet or site name (no URLs). Do not restate the question. Do not 
 No words like "As an AI". If the research found nothing useful, say what the forecast rests on instead."""
 
 
+def _num(v: float) -> str:
+    if abs(v) >= 1000:
+        return f"{v:,.0f}"
+    return f"{v:.3g}"
+
+
+def compact(prediction, is_date: bool = False, room: int = 160) -> str:
+    """The forecast on one short line, whatever the question type.
+
+    binary 0.25 -> "25%"; options -> "A 40%, B 35%, +2 more"; a distribution -> "median 12 (80% between 5 and 30)".
+    """
+    from datetime import datetime, timezone
+
+    if isinstance(prediction, (int, float)):
+        return f"{prediction * 100:.0f}%"
+    opts = getattr(prediction, "predicted_options", None)
+    if opts is not None:
+        ranked = sorted(opts, key=lambda o: -o.probability)
+        out, shown = "", 0
+        for o in ranked:
+            part = f"{o.option_name} {o.probability * 100:.0f}%"
+            nxt = part if not out else f"{out}, {part}"
+            if len(nxt) > room - 12:
+                break
+            out, shown = nxt, shown + 1
+        if shown < len(ranked):
+            out += f", +{len(ranked) - shown} more"
+        return out
+    pts = getattr(prediction, "declared_percentiles", None)
+    if pts:
+        pts = sorted(pts, key=lambda p: p.percentile)
+
+        def at(q):
+            for a, b in zip(pts, pts[1:]):
+                if a.percentile <= q <= b.percentile:
+                    t = (q - a.percentile) / ((b.percentile - a.percentile) or 1)
+                    return a.value + t * (b.value - a.value)
+            return pts[0].value if q < pts[0].percentile else pts[-1].value
+
+        fmt = (lambda v: datetime.fromtimestamp(v, timezone.utc).strftime("%d %b %Y")) if is_date else _num
+        return f"median {fmt(at(0.5))} (80% between {fmt(at(0.1))} and {fmt(at(0.9))})"
+    return " ".join(str(prediction).split())[:room]
+
+
 def heading(readable_forecast: str) -> str:
     # forecasting-tools requires the explanation to start with '#'
     return f"# BrightPanda forecast: {readable_forecast}"

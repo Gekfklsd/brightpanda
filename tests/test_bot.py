@@ -104,10 +104,10 @@ def test_median_of_guarded_runs_is_sent_with_a_private_short_comment(env):
     [c] = client.comments
     assert c["is_private"] is True
     assert len(c["text"]) <= 500
-    assert c["text"].startswith("# BrightPanda forecast: 25.0%")
+    assert c["text"].startswith("# BrightPanda forecast: 25%")
     assert "Reuters" in c["text"]
     [row] = log_rows(env)
-    assert row["ok"] and row["published"] and row["forecast"] == "25.0%"
+    assert row["ok"] and row["published"] and row["forecast"] == "25%"
     assert row["sources"] == ["Reuters"] and row["asknews_calls"] == 6
     assert bot.budget["sent"] == 1 and bot.budget["asknews_season"] == 6
 
