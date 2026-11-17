@@ -91,9 +91,9 @@ class BrightPandaBot(FallTemplateBot2026):
                 allowed_tries=2,
                 max_tokens=config.MAX_TOKENS_FORECASTER,
             ),
-            "summarizer": GeneralLlm(model=config.PARSER, temperature=0.2, max_tokens=config.MAX_TOKENS_SMALL),
+            "summarizer": GeneralLlm(model=config.PARSER, temperature=0.2, max_tokens=config.MAX_TOKENS_SMALL, allowed_tries=6),
             "researcher": "panda",
-            "parser": GeneralLlm(model=config.PARSER, temperature=0, max_tokens=config.MAX_TOKENS_SMALL),
+            "parser": GeneralLlm(model=config.PARSER, temperature=0, max_tokens=config.MAX_TOKENS_SMALL, allowed_tries=6),  # new OpenRouter accounts: 20 requests a minute; retries back off
         }
 
     # -------------------------------------------------------------- research
@@ -180,7 +180,7 @@ class BrightPandaBot(FallTemplateBot2026):
         reasoning = self._middle_reasoning(result.predictions)
         m["fallback_body"] = C.fallback_body(reasoning)
         try:
-            llm = self._comment_llm or GeneralLlm(model=config.COMMENTER, temperature=0.2, timeout=90, allowed_tries=2, max_tokens=config.MAX_TOKENS_COMMENT)
+            llm = self._comment_llm or GeneralLlm(model=config.COMMENTER, temperature=0.2, timeout=90, allowed_tries=6, max_tokens=config.MAX_TOKENS_COMMENT)
             m["comment_body"] = await llm.invoke(
                 C.COMMENT_PROMPT.format(
                     question=question.question_text,

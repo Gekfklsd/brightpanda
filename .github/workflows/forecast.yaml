@@ -1,8 +1,9 @@
 name: Forecast (scheduled)
 
-# The prize bot. Every 20 minutes it looks for new questions in FutureEval Fall 2026 and MiniBench,
+# The prize bot. It looks for new questions in FutureEval Fall 2026 and MiniBench every 15 minutes,
 # forecasts the ones it has not forecast before, and sends each with a short private comment.
-# Questions open for about 3 hours, so a 20 minute cadence catches them even when GitHub runs late.
+# GitHub's timer fired only twice in 15 hours, so each job keeps its own clock (scripts/loop.sh)
+# for about 5h40 and then starts the next job. The cron below is only a backstop.
 
 on:
   schedule:
@@ -15,11 +16,12 @@ concurrency:
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   forecast:
     runs-on: ubuntu-latest
-    timeout-minutes: 55
+    timeout-minutes: 355
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -38,6 +40,7 @@ jobs:
           [ -n "$OPENROUTER_API_KEY" ] || { echo "::error::The model key is missing. Add it as the repository secret OPENROUTER_API_KEY."; exit 1; }
       - run: uv sync --locked
       - name: Forecast
+        id: loop
         env:
           METACULUS_TOKEN: ${{ secrets.METACULUS_TOKEN }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
@@ -46,14 +49,13 @@ jobs:
           ASKNEWS_API_KEY: ${{ secrets.ASKNEWS_API_KEY }}
           PANDA_LOG_PUBKEY: ${{ vars.PANDA_LOG_PUBKEY }}
           PANDA_FORECASTER: ${{ vars.PANDA_FORECASTER }}
-        run: uv run python run.py --mode tournament
-      - name: Keep the log and the budget count
-        if: always()
         run: |
           git config user.name "brightpanda-bot"
           git config user.email "brightpanda-bot@users.noreply.github.com"
-          git add logs/runs.age.jsonl state/budget.json 2>/dev/null || true
-          if git diff --cached --quiet; then echo "nothing new"; exit 0; fi
-          git commit -m "log: forecast run $(date -u +%Y-%m-%dT%H:%MZ)"
-          for i in 1 2 3; do git pull --rebase -q && git push -q && exit 0; sleep 5; done
-          exit 1
+          bash scripts/loop.sh
+      - name: Start the next job
+        # only after a full loop: a job that failed early must never restart itself in a tight circle
+        if: ${{ !cancelled() && steps.loop.outcome == 'success' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run forecast.yaml --ref main
